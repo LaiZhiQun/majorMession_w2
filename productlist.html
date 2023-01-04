@@ -34,7 +34,7 @@
                 </th>
               </tr>
             </thead>
-            <tbody v-for="item in productsList" :key="item.title">
+            <tbody v-for="item in productsList" :key="item.id">
               <tr>
                 <td width="150">{{ item.title }}</td>
                 <td width="120">
@@ -88,7 +88,6 @@
   <script>
     const url = 'https://vue3-course-api.hexschool.io/v2/'
     const api_path = 'brad5566'
-    // const uid = 'EOvTMZ65tXfb4fWgYPQdeVFCLY82'
 
     const app = {
       data() {
@@ -114,7 +113,7 @@
         getProductsList() {
           axios({
             method: 'get',
-            url: `${url}api/${api_path}/admin/products/all`,
+            url: `${url}api/${api_path}/admin/products`,
           }).then(res => {
             this.productsList = res.data.products
           }).catch(err => {
