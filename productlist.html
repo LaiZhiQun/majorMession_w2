@@ -107,7 +107,7 @@
             this.getProductsList()
           }).catch(err => {
             // 若登入失敗，則回到登入頁面
-            alert(err.data.message)
+            alert(err.response.data.message)
             document.location.href = 'index.html';
           })
         },
