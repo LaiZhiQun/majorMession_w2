@@ -107,7 +107,7 @@
             this.getProductsList()
           }).catch(err => {
             // 若登入失敗，則回到登入頁面
-            alert(err.response.data.message)
+            alert(err.data.message)
             document.location.href = 'index.html';
           })
         },
@@ -118,7 +118,7 @@
           }).then(res => {
             this.productsList = res.data.products
           }).catch(err => {
-            alert(error.response.data);
+            alert(err.data.message);
           })
         },
         getProduct(item) {

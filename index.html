@@ -77,7 +77,8 @@
             alert(res.data.message)
             document.location.href = "./productlist.html";
           }).catch(err => {
-            alert(err.response.data.message)
+            console.log(err);
+            // alert(err.data.message)
           })
         }
       }
