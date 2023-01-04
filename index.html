@@ -5,123 +5,81 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Login In</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./loginin.css">
 </head>
 
 <body>
   <div id="app">
     <div class="container">
-      <div class="row py-3">
-        <div class="col-md-6">
-          <h2>產品列表</h2>
-          <table class="table table-hover mt-4">
-            <thead>
-              <tr>
-                <th width="150">產品名稱</th>
-                <th width="120">
-                  原價
-                </th>
-                <th width="120">
-                  售價
-                </th>
-                <th width="150">
-                  是否啟用
-                </th>
-                <th width="120">
-                  查看細節
-                </th>
-              </tr>
-            </thead>
-            <tbody v-for="item in productsList" :key="item.title">
-              <tr>
-                <td width="150">{{ item.title }}</td>
-                <td width="120">
-                  {{ item.origin_price }}
-                </td>
-                <td width="120">
-                  {{ item.price }}
-                </td>
-                <td width="150">
-                  <span v-if="item.is_enabled" class="text-success">啟用</span>
-                  <span v-else>未啟用</span>
-                </td>
-                <td width="120">
-                  <button type="button" @click="getProduct(item.id)" class="btn btn-primary">查看細節</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <p>目前有 <span>{{ productsList.length }}</span> 項產品</p>
-        </div>
-        <div class="col-md-6">
-          <h2>單一產品細節</h2>
-          <template v-if="product.title">
-            <div class="card mb-3">
-              <img :src="product.imageUrl" class="card-img-top primary-image" alt="主圖">
-              <div class="card-body">
-                <h5 class="card-title">
-                  {{ product.title }}
-                  <span class="badge bg-primary ms-2">{{ product.category }}</span>
-                </h5>
-                <p class="card-text">商品描述：{{ product.description }}</p>
-                <p class="card-text">商品內容：{{ product.content }}</p>
-                <div class="d-flex">
-                  <p class="card-text me-2">{{ product.origin_price }}</p>
-                  <p class="card-text text-secondary"><del>{{ product.price }}</del></p>
-                  元 / {{ product.unit }}
-                </div>
-              </div>
+      <div class="row justify-content-center">
+        <h1 class="h3 mb-3 font-weight-normal">
+          請先登入
+        </h1>
+        <div class="col-8">
+          <form id="form" class="form-signin">
+            <div class="form-floating mb-3">
+              <input v-model="username" type="email" class="form-control" id="username" placeholder="name@example.com"
+                required autofocus>
+              <label for="username">Email address</label>
             </div>
-            <template v-for="item in product.imagesUrl" :key="item">
-              <img :src="item" alt="" class="images m-2">
-            </template>
-          </template>
-          <p v-else class="text-secondary">請選擇一個商品查看</p>
+            <div class="form-floating">
+              <input v-model="password" type="password" class="form-control" id="password" placeholder="Password"
+                required>
+              <label for="password">Password</label>
+            </div>
+            <button @click.prevent="login" class="btn btn-lg btn-primary w-100 mt-3" type="submit">
+              登入
+            </button>
+          </form>
         </div>
       </div>
+      <p class="mt-5 mb-3 text-muted">
+        &copy; 2021~∞ - 六角學院
+      </p>
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.37/vue.global.prod.min.js"></script>
   <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.9.1/axios.min.js'
+    integrity='sha512-Xk3wWei2TGrsh9kDSBKUMIjw/86sLUvhtnv9f7fOuIwhhiUTKz8szkWkzHthrM5Bb3Bu9idSzkxOrkzhcneuiw=='
+    crossorigin='anonymous'></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+    integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
+    integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
+    crossorigin="anonymous"></script>
   <script>
     const url = 'https://vue3-course-api.hexschool.io/v2/'
-    const api_path = 'brad5566'
-    const token = 'eyJhbGciOiJSUzI1NiIsImtpZCI6InRCME0yQSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS92dWUtY291cnNlLWFwaSIsImF1ZCI6InZ1ZS1jb3Vyc2UtYXBpIiwiYXV0aF90aW1lIjoxNjcyODI5NjE3LCJ1c2VyX2lkIjoiRU92VE1aNjV0WGZiNGZXZ1lQUWRlVkZDTFk4MiIsInN1YiI6IkVPdlRNWjY1dFhmYjRmV2dZUFFkZVZGQ0xZODIiLCJpYXQiOjE2NzI4Mjk2MTcsImV4cCI6MTY3MzI2MTYxNywiZW1haWwiOiJ3Y2poMDkxMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsid2NqaDA5MTFAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.bepOK0GOr3tnhv-OFdnpCZklgAyILRmN0F23074xEr0odFbLQicJ7R501OFdzaJwhX153hZZWOcf80vrA38HZvlvpLl9jTHe4DOavrxoXmM-UKDvocBbIGC6UUNrd9XRUQdlYbsYUG8BfXNEmI6owd_Ra_N4fAYDlsiDPuR_37afi8dWMmyLhNb0Em730XPSvJdYkfYPdKVrNcVq02xQ6TNXdPlTX2Dk6xajH9iAoUOPJ74Vtk0DKxAw_LP4eq3pmcm5WAFgO2yI5H76YJwtyckoHmdr-TdrSkQIRin0UKvomZU0rW51Zrhuas_5n1dG2XEhH1FrH2n3WWfEgIjTmA'
-    const uid = 'EOvTMZ65tXfb4fWgYPQdeVFCLY82'
 
     const app = {
       data() {
         return {
-          productsList: [],
-          product: {}
+          username: '',
+          password: ''
         }
       },
       methods: {
-        getProductsList() {
+        login() {
           axios({
-            method: 'get',
-            url: `${url}api/${api_path}/products/all`,
+            method: 'post',
+            url: `${url}admin/signin`,
+            data: {
+              username: this.username,
+              password: this.password
+            }
           }).then(res => {
-            this.productsList = res.data.products
+            const token = res.data.token
+            const expired = res.data.expired
+            document.cookie = `myToken=${token};expires=${new Date(expired)}; path=/`
+            alert(res.data.message)
+            document.location.href = "./productlist.html";
           }).catch(err => {
-            console.log(error.response.data);
-          })
-        },
-        getProduct(id) {
-          axios({
-            method: 'get',
-            url: `${url}api/${api_path}/product/${id}`
-          }).then(res => {
-            this.product = res.data.product
-          }).catch(err => {
-            console.log(error.response.data);
+            alert(err.response.data.message)
           })
         }
-      },
-      mounted() {
-        this.getProductsList()
       }
     }
 
