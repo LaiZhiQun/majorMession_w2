@@ -42,9 +42,6 @@
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.37/vue.global.prod.min.js"></script>
   <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.9.1/axios.min.js'
-    integrity='sha512-Xk3wWei2TGrsh9kDSBKUMIjw/86sLUvhtnv9f7fOuIwhhiUTKz8szkWkzHthrM5Bb3Bu9idSzkxOrkzhcneuiw=='
-    crossorigin='anonymous'></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
     integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG"
     crossorigin="anonymous"></script>
@@ -77,7 +74,7 @@
             alert(res.data.message)
             document.location.href = "./productlist.html";
           }).catch(err => {
-            alert(err.data.message)
+            alert(err.response.data.message)
           })
         }
       }
